@@ -1,0 +1,33 @@
+services:
+    postgres:
+        image: postgres:16.2
+        container_name: postgres
+        # restart: always
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - 5432:5432
+
+    redis:
+        image: redis:7.4-rc-alpine
+        container_name: redis
+        restart: always
+        ports:
+            - 6379:6379
+
+    fastapi:
+        build: .
+        container_name: fastapi
+        restart: always
+        ports:
+            - 8000:8000
+        command: >
+            sh -c "python create_table.py &&
+                   fastapi run backend.py"
+        volumes:
+            - .:/code/
+        depends_on:
+            - postgres
+            - redis
