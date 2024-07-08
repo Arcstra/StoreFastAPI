@@ -3,21 +3,21 @@ name: CI
 on:
   push:
     branches:
-      – main
+      - main
   pull_request:
     branches:
-      – main
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      – name: Login to DockerHub
+      - name: Login to DockerHub
         run: |
           docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
 
-      – name: Start Docker Compose services
+      - name: Start Docker Compose services
         run: |
           docker-compose up
 
@@ -25,12 +25,12 @@ jobs:
         run: |
           pip install pytest
 
-      – name: Run tests
+      - name: Run tests
         run: |
           # Добавьте ваши команды для тестирования здесь
           echo "Running tests..."
           pytest test.py
 
-      – name: Stop and remove Docker Compose services
+      - name: Stop and remove Docker Compose services
         run: |
           docker-compose down
