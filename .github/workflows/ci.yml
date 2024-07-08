@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
 
       - name: Start Docker Compose services
         run: |
-          docker-compose up
+          docker-compose -f docker-compose.yml up
 
       - name: Install Pytest
         run: |
@@ -33,4 +33,4 @@ jobs:
 
       - name: Stop and remove Docker Compose services
         run: |
-          docker-compose down
+          docker-compose -f docker-compose.yml down
