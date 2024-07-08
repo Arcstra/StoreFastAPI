@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      – main
+  pull_request:
+    branches:
+      – main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      – name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      – name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      – name: Start Docker Compose services
+        run: |
+          docker-compose up
+
+      - name: Install Pytest
+        run: |
+          pip install pytest
+
+      – name: Run tests
+        run: |
+          # Добавьте ваши команды для тестирования здесь
+          echo "Running tests..."
+          pytest test.py
+
+      – name: Stop and remove Docker Compose services
+        run: |
+          docker-compose down
