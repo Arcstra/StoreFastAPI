@@ -19,7 +19,7 @@ jobs:
 
       - name: Start Docker Compose services
         run: |
-          docker-compose -f docker-compose.yml up
+          docker compose up
 
       - name: Install Pytest
         run: |
@@ -33,4 +33,4 @@ jobs:
 
       - name: Stop and remove Docker Compose services
         run: |
-          docker-compose -f docker-compose.yml down
+          docker compose down
